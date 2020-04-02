@@ -1,4 +1,6 @@
-const User = require('../models/User')
+const bcrypt = require('bcrypt');
+const User = require('../models/User');
+
 // @desc Get all users
 // @route GET /api/v1/users
 // @access Public
@@ -25,10 +27,20 @@ exports.getUsers = async (req, res, next) => {
 // @access Public
 exports.addUser = async (req, res, next) => {
     try {
-        const {firstName, lastName, email, password} = req.body;
+        const body = req.body
 
-        const user = await User.create(req.body);
-    
+        const saltRounds = 10
+        const passwordHash = await bcrypt.hash(body.password, saltRounds)
+
+        const user = new User({
+            firstName: body.firstName,
+            lastName: body.lastName,
+            email: body.email,
+            passwordHash,
+        })
+
+        await user.save();
+
         return res.status(201).json({
             success: true,
             data: user
@@ -41,11 +53,12 @@ exports.addUser = async (req, res, next) => {
                 success: false,
                 error: messages
             })
-        }
+        } else {
         return res.status(500).json({
             success: false,
-            error: 'Server Error'
+            error: `Server Error: ${error.message}`
         });
+    }
     }
 
 
