@@ -2,8 +2,10 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
-const reviews = require('./routes/reviews');
 const connectDB = require('./config/db');
+
+const reviews = require('./routes/reviews');
+const users = require('./routes/users');
 
 dotenv.config({path: './config/config.env'});
 
@@ -12,8 +14,12 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));
+}
 
 app.use('/api/v1/reviews', reviews);
+app.use('/api/v1/users', users);
 //app.get('/', (req, res) => res.send('Hello'));
 
 const PORT = process.env.PORT || 5000;
