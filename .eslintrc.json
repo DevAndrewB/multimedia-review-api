@@ -14,7 +14,10 @@
     "ecmaVersion": 2018
   },
   "rules": {
-    "prettier/prettier": ["error", { "singleQuote": true }],
+    "prettier/prettier": [
+      "error",
+      { "singleQuote": true, "endOfLine": "auto" }
+    ],
     "comma-dangle": [
       "error",
       {
@@ -24,6 +27,7 @@
         "exports": "never",
         "functions": "never"
       }
-    ]
+    ],
+    "linebreak-style": ["error", "windows"]
   }
 }

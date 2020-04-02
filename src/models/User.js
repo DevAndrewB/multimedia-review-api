@@ -7,27 +7,27 @@ const UserSchema = new mongoose.Schema({
     type: String,
     trim: true,
     lowercase: true,
-    required: [true, 'Please add your first name.'],
+    required: [true, 'Please add your first name.']
   },
   lastName: {
     type: String,
     trim: true,
     lowercase: true,
-    required: [true, 'Please add your last name.'],
+    required: [true, 'Please add your last name.']
   },
   email: {
     type: mongoose.SchemaTypes.Email,
-    unique: true,
+    unique: true
   },
   passwordHash: {
     type: String,
     minlength: 8,
-    required: [true, 'Please add your password.'],
+    required: [true, 'Please add your password.']
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-  },
+    default: Date.now
+  }
 });
 
 UserSchema.plugin(uniqueValidator);
@@ -39,7 +39,7 @@ UserSchema.set('toJSON', {
     delete returnedObject.__v;
     // the passwordHash should not be revealed
     delete returnedObject.passwordHash;
-  },
+  }
 });
 
 module.exports = mongoose.model('User', UserSchema);

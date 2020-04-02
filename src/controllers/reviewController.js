@@ -10,12 +10,12 @@ exports.getReviews = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       count: reviews.length,
-      data: reviews,
+      data: reviews
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error',
+      error: 'Server Error'
     });
   }
 };
@@ -31,7 +31,7 @@ exports.addReview = async (req, res, next) => {
 
     return res.status(201).json({
       success: true,
-      data: review,
+      data: review
     });
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -39,12 +39,12 @@ exports.addReview = async (req, res, next) => {
 
       res.status(400).json({
         success: false,
-        error: messages,
+        error: messages
       });
     }
     return res.status(500).json({
       success: false,
-      error: 'Server Error',
+      error: 'Server Error'
     });
   }
 };
@@ -58,19 +58,19 @@ exports.deleteReview = async (req, res, next) => {
     if (!review) {
       return res.status(404).json({
         success: false,
-        error: 'No review found',
+        error: 'No review found'
       });
     }
 
     await review.remove();
     return res.status(200).json({
       success: true,
-      data: {},
+      data: {}
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      error: 'Server Error',
+      error: 'Server Error'
     });
   }
 };

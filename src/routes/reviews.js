@@ -4,7 +4,7 @@ const router = express.Router();
 const {
   getReviews,
   addReview,
-  deleteReview,
+  deleteReview
 } = require('../controllers/reviewController');
 
 router.route('/').get(getReviews).post(addReview);
