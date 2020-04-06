@@ -7,7 +7,7 @@ const connectDB = require('./src/config/db');
 
 const reviews = require('./src/routes/reviews');
 const users = require('./src/routes/users');
-const login = require('./src/routes/login');
+const auth = require('./src/routes/login');
 
 dotenv.config({ path: './src/config/config.env' });
 
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/api/v1/reviews', reviews);
 app.use('/api/v1/users', users);
-app.use('/api/v1/login', login);
+app.use('/api/v1/auth', auth);
 // app.get('/', (req, res) => res.send('Hello'));
 
 const PORT = process.env.PORT || 5000;
