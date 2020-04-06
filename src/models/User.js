@@ -15,9 +15,19 @@ const UserSchema = new mongoose.Schema({
     lowercase: true,
     required: [true, 'Please add your last name.']
   },
+  userName: {
+    type: String,
+    trim: true,
+    lowercase: true,
+    unique: true,
+    required: [true, 'Please add a username.']
+  },
   email: {
     type: mongoose.SchemaTypes.Email,
-    unique: true
+    trim: true,
+    lowercase: true,
+    unique: true,
+    required: [true, 'Please add your email.']
   },
   passwordHash: {
     type: String,
