@@ -56,6 +56,9 @@ exports.addUser = async (req, res) => {
   try {
     const { body } = req;
 
+    if (!body.password || body.password.length < 8) {
+      throw new Error('PasswordLength');
+    }
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
@@ -75,18 +78,30 @@ exports.addUser = async (req, res) => {
     });
   } catch (error) {
     if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map((val) => val.message);
-
-      res.status(400).json({
+      const type = Object.values(error.errors).map((val) => val.path);
+      let errormsg = '';
+      if (type[0] === 'userName') {
+        errormsg = 'Username cannot be empty or already exists.';
+      } else if (type[0] === 'email') {
+        errormsg = 'Email cannot be empty or already exists.';
+      } else {
+        errormsg = 'Please complete all fields.';
+      }
+      return res.status(400).json({
         success: false,
-        error: messages
-      });
-    } else {
-      return res.status(500).json({
-        success: false,
-        error: `Server Error: ${error.message}`
+        error: errormsg
       });
     }
+    if (error.message === 'PasswordLength') {
+      return res.status(400).json({
+        success: false,
+        error: 'Password must be 8 characters.'
+      });
+    }
+    return res.status(500).json({
+      success: false,
+      error: `Server Error: ${error.message}`
+    });
   }
 };
 
