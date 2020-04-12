@@ -9,7 +9,10 @@ const User = require('../models/User');
 // @access   Private
 exports.getLoggedUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id)
+      .populate('friends')
+      .select('-password');
+
     res.json(user);
   } catch (err) {
     console.error(err.message);

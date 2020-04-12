@@ -22,7 +22,7 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-// @desc Get all User
+// @desc Get a User
 // @route GET /api/v1/users
 // @access Public
 exports.getUser = async (req, res) => {
@@ -67,7 +67,8 @@ exports.addUser = async (req, res) => {
       lastName: body.lastName,
       userName: body.userName,
       email: body.email,
-      passwordHash
+      passwordHash,
+      friends: []
     });
 
     await user.save();
@@ -174,6 +175,63 @@ exports.deleteUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: 'Server Error'
+    });
+  }
+};
+
+// @desc Add User
+// @route POST /api/v1/users
+// @access Public
+exports.addUser = async (req, res) => {
+  try {
+    const { body } = req;
+
+    if (!body.password || body.password.length < 8) {
+      throw new Error('PasswordLength');
+    }
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(body.password, saltRounds);
+
+    const user = new User({
+      firstName: body.firstName,
+      lastName: body.lastName,
+      userName: body.userName,
+      email: body.email,
+      passwordHash,
+      friends: []
+    });
+
+    await user.save();
+
+    return res.status(201).json({
+      success: true,
+      data: user
+    });
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const type = Object.values(error.errors).map((val) => val.path);
+      let errormsg = '';
+      if (type[0] === 'userName') {
+        errormsg = 'Username cannot be empty or already exists.';
+      } else if (type[0] === 'email') {
+        errormsg = 'Email cannot be empty or already exists.';
+      } else {
+        errormsg = 'Please complete all fields.';
+      }
+      return res.status(400).json({
+        success: false,
+        error: errormsg
+      });
+    }
+    if (error.message === 'PasswordLength') {
+      return res.status(400).json({
+        success: false,
+        error: 'Password must be 8 characters.'
+      });
+    }
+    return res.status(500).json({
+      success: false,
+      error: `Server Error: ${error.message}`
     });
   }
 };
