@@ -14,7 +14,7 @@ const ReviewSchema = new mongoose.Schema({
     required: [true, "Movie name required"]
   },
   movieId: {
-    type: Number,
+    type: String,
     required: [true, "Movie Id required"]
   },
   createdAt: {
