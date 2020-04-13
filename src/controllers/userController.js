@@ -28,7 +28,9 @@ exports.getUsers = async (req, res) => {
 exports.getUser = async (req, res) => {
   // res.send('Get users');
   try {
-    const user = await User.findOne({ userName: req.params.id });
+    const user = await User.findOne({ userName: req.params.id }).populate(
+      'friends'
+    );
 
     if (!user) {
       return res.status(404).json({
@@ -143,7 +145,13 @@ exports.updateUser = async (req, res) => {
       data: user
     });
   } catch (err) {
-    console.error(err.message);
+    console.error(err.codeName);
+    if (err.codeName === 'DuplicateKey') {
+      return res.status(400).json({
+        success: false,
+        error: 'Duplicate Username.'
+      });
+    }
     return res.status(500).send('Server error');
   }
 };
