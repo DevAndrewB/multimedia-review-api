@@ -7,6 +7,7 @@ const connectDB = require('./src/config/db');
 
 const reviews = require('./src/routes/reviews');
 const users = require('./src/routes/users');
+const friends = require('./src/routes/friends');
 const auth = require('./src/routes/login');
 
 dotenv.config({ path: './src/config/config.env' });
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/reviews', reviews);
 app.use('/api/v1/users', users);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/friends', friends);
 // app.get('/', (req, res) => res.send('Hello'));
 
 const PORT = process.env.PORT || 5000;

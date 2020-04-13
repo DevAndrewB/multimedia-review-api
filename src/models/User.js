@@ -34,6 +34,7 @@ const UserSchema = new mongoose.Schema({
     minlength: 8,
     required: [true, 'Please add your password.']
   },
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: {
     type: Date,
     default: Date.now
