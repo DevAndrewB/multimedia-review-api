@@ -38,7 +38,9 @@ const UserSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
 });
 
 UserSchema.plugin(uniqueValidator);

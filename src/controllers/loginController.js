@@ -11,6 +11,8 @@ exports.getLoggedUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
       .populate('friends')
+      .populate('friendRequests')
+      .populate('reviews')
       .select('-password');
 
     res.json(user);

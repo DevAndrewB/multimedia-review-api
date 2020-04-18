@@ -28,9 +28,9 @@ exports.getUsers = async (req, res) => {
 exports.getUser = async (req, res) => {
   // res.send('Get users');
   try {
-    const user = await User.findOne({ userName: req.params.id }).populate(
-      'friends'
-    );
+    const user = await User.findOne({ userName: req.params.id })
+      .populate('friends')
+      .populate('reviews');
 
     if (!user) {
       return res.status(404).json({
