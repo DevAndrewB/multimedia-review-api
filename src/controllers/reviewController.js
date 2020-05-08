@@ -20,6 +20,36 @@ exports.getReviews = async (req, res, next) => {
   }
 };
 
+// @desc Get a User
+// @route GET /api/v1/users
+// @access Public
+exports.getReviewsByMovieId = async (req, res) => {
+  // res.send('Get users');
+  try {
+    const reviews = await Review.find({ movieId: req.params.movieId })
+
+    if (reviews.length <= 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No reviews found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      count: reviews.length,
+      data: reviews
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+
+
 // @desc Add Reviews
 // @route POST /api/v1/reviews
 // @access Public
